@@ -1,0 +1,43 @@
+Epoch: 10
+
+Optimizer:
+----------------------
+Adam: 36
+adagrad: 17.35
+SDG (0.01) : 35.36
+SDG (0.001) : 23.26
+SDG (0.0005) : 19.61
+nadam (0.001) : 33.57
+nadam (0.005) : 29.38
+nadam (0.0005) : 31.57
+RMSprop (0.001): 38.66
+RMSprop (0.005): 33.21
+RMSprop (0.0005) :38.29
+
+Sonuç : adam kullanılacak
+
+Batch Size:
+----------------------------------
+64: 38.66
+32: 35.40
+24: 31.21
+128: 36.36
+256: 34.26
+96 : 40.12
+
+Sonuç : 96 kullanılacak
+
+Çıkış Aktivasyon Fonksiyonu:
+
+softmax = 40.12
+sigmoid = 15.41
+
+Sonuç : sigmoid kullanılacak
+
+Düzleştirme:
+--------------
+Flatten 40.36
+globalaveragemaxpoolin: 27.23
+
+
+

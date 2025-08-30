@@ -46,17 +46,39 @@ def load_and_preprocess_data(data_dir="cifar-100-data"):
     y_train = tf.keras.utils.to_categorical(y_train, num_classes=100)
     y_test = tf.keras.utils.to_categorical(y_test, num_classes=100)
 
-    return (x_train, y_train), (x_test, y_test)
+    # Veri artırma üretecini oluştur
+    datagen = get_data_augmentation_generator()
+    datagen.fit(x_train) # Üreteci eğitim verisine göre ayarla
+
+    return (x_train, y_train), (x_test, y_test), datagen
+
+def get_data_augmentation_generator():
+    """
+    Eğitim verisi için veri artırma (data augmentation) üreteci oluşturur.
+    Görüntülere rastgele döndürme, kaydırma, kırpma ve yatay çevirme uygular.
+
+    Returns:
+        tf.keras.preprocessing.image.ImageDataGenerator: Yapılandırılmış üreteç.
+    """
+    datagen = tf.keras.preprocessing.image.ImageDataGenerator(
+        rotation_range=10,
+        width_shift_range=0.2,
+        height_shift_range=0.2,
+        horizontal_flip=True,
+        zoom_range=0.2
+    )
+    return datagen
 
 if __name__ == '__main__':
     # Fonksiyonun doğru çalışıp çalışmadığını test et
     # 'cifar-100-data' klasörünün var olduğundan ve dosyaları içerdiğinden emin olun
     if os.path.exists("cifar-100-data") and os.path.exists("cifar-100-data/train"):
-        (x_train, y_train), (x_test, y_test) = load_and_preprocess_data()
+        (x_train, y_train), (x_test, y_test), datagen = load_and_preprocess_data()
         print("Eğitim verisi şekli:", x_train.shape)
         print("Eğitim etiketleri şekli:", y_train.shape)
         print("Test verisi şekli:", x_test.shape)
         print("Test etiketleri şekli:", y_test.shape)
+        print("Veri artırma üreteci oluşturuldu:", datagen is not None)
         print("Veri başarıyla yüklendi ve işlendi.")
     else:
         print("Hata: 'cifar-100-data' klasörü bulunamadı veya 'train' dosyası eksik.")
